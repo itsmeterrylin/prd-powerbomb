@@ -1,5 +1,7 @@
 # PRD PowerBomb
 
+![PRD PowerBomb](README.png)
+
 A comprehensive Product Requirements Document (PRD) management system for coding with LLMs.
 
 ## Overview

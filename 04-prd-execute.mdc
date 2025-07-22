@@ -1,0 +1,57 @@
+---
+description: User has implementation plan reviewed and ready to execute.
+globs:
+alwaysApply: false
+---
+
+# Task Execution Protocol
+
+## 🎯 Goal: Execute approved task checklists with production safety
+
+**Prerequisites**: Plan reviewed and converted to executable format via @03-prd-review.mdc
+
+
+### **Pre-Execution**
+1. Verify plan follows exact format from @03-prd-review.mdc
+2. Confirm all file paths exist via codebase_search
+3. Start with first uncompleted `[ ]` task
+
+### **Task Execution**  
+1. **Find Next Task** - First uncompleted `[ ]` item
+2. **Execute** - Complete single task only
+3. **QA** - Run appropriate layer validation commands
+4. **Mark Complete** - Update `[x]`, save file, get user "yes"
+5. **Git Commit** - Add commit ID when phase complete
+6. **Update Status** - Change section to `✅ [COMPLETED]` when phase done
+- **QA Gates** - Complete QA after each phase before proceeding
+- **PAUSE after each phase** and await user confirmation to proceed
+
+
+## QA Validation Steps
+1. **[Layer] Test** - Specific validation command/test
+2. **Integration** - End-to-end validation
+3. **Build Verification** - No compilation errors/warnings
+4. **User Validation Scenarios** - Propose Manual QA confirmation user should take
+
+## 🏗️ Phase Execution Order (Backend to Frontend where applicable)
+1. **Database (1.0)** → QA Validation
+2. **Backend (2.0)** → QA Validation  
+3. **Network (3.0)** → QA Validation
+4. **Frontend (4.0)** → QA Validation
+5. **Tech Debt (5.0)** → QA Validation
+
+## 🛑 Stop Conditions
+- Plan format incorrect → redirect to @03-prd-review.mdc
+- Build/test fails → fix before continuing
+- Failing to fix after 3 tries → pause and redirect to @09-rubberduck.mdc
+- User rejects QA results → address issues
+- Placeholder/mock code detected → remove before proceeding
+
+## 🧪 QA Commands by Layer
+```
+
+## 🎯 Success Metrics
+- **Build Status** - All builds successful
+- **Test Status** - All tests passing
+- **User Experience** - No regressions introduced
+- **Production Safety** - No placeholders/mocks deployed

@@ -1,0 +1,44 @@
+---
+globs: *.swift,*.py,*.json,*.html,*.js,*.css,*.ts
+alwaysApply: false
+---
+
+✅ Universal Code Quality Rules (Swift & Python)
+	•	Max 2 levels of nesting (if / else / loop)
+	•	Functions should be small & single-purpose (<30 lines)
+	•	No magic values → use let/const or named constants
+	•	Use intention-revealing names for vars, funcs, classes
+	•	Avoid silent catch blocks — log or explicitly handle
+	•	Avoid duplicating state across local/props/context
+	•	Add // TODO(name, date) or # TODO(name, date) for hacks
+	•	No unnecessary fallbacks — document if needed
+	•	Expensive loops or filters must be memoized or paginated
+
+⸻
+
+🐍 Python-Specific
+	•	Explicit is better than implicit. Don’t hide behavior in dunder methods or decorators unless standard.
+	•	Use typing for all public functions/classes. Especially return values.
+	•	Don’t mutate arguments in-place. Always return new values unless explicitly designed to do so.
+	•	Use dataclasses or Pydantic for structured data, not loose dicts.
+	•	Group related functions into modules, not long files.
+	•	Use __all__ or single-point exports. Avoid accidental public exposure.
+	•	Don’t catch Exception broadly. Use specific error types.
+	•	Use pathlib and logging instead of os.path and print.
+	•	Stick to black and ruff/flake8 for style and linting.
+
+⸻
+
+🍎 Swift-Specific
+	•	Avoid force unwrapping (!) — always use guard let, if let, or default values
+	•	Use struct by default, only use class if you need reference semantics
+	•	Functions should return immutable values unless you’re explicitly mutating state
+	•	Favor value types (struct/enums) + protocol conformance
+	•	Avoid deep optional chaining — prefer early returns with guard
+	•	Use private(set) or internal access control to encapsulate state
+	•	Group related code using extensions — keeps logic modular and discoverable
+	•	Use @MainActor or concurrency annotations clearly
+	•	Use SwiftLint for consistent style, and mark temporary disables with // swiftlint:disable [rule] // TODO(name, date)
+
+    Use curl to test backend changes, JWT is included in /Users/terrylin/WorkoutVoice/backend/.env under JWT_TEST
+    Use test audio files in this folder to test transcription/tagging endpoints: /Users/terrylin/WorkoutVoice/backend/tests/audio-files

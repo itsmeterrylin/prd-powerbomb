@@ -1,0 +1,155 @@
+---
+description: User mentions creating an implementation plan, create a doc, or start a plan, follow these rules to create that plan.
+globs: 
+alwaysApply: false
+---
+# PRD Creation Rules
+
+## 🎯 Goal: Create comprehensive implementation plans for features, do not create fallback logic unless user specifies to do so.
+
+## 📚 Reference Architecture
+- **Frontend**: 
+- **Backend**: 
+- **API Contracts**: 
+- **Documentation Standards**: 
+- **Production Database**: 
+- **Production API**:
+
+## Required Components
+- **Current Date**: Check system time for timestamps
+- **Summary** - Clear goal statement
+- **User Stories** - Expected behaviors (Gherkin Framework)
+- **Affected Files** - Real file paths (use codebase_search first)
+- **Git Strategy** - Branch naming for entire plan, commit checkpoints for each phase
+- **QA Strategy** - LLM self-test + manual user verification
+
+## 📝 Gherkin Framework (Use Throughout All Steps)
+Write clear, testable scenarios using Given/When/Then format for:
+
+### **User Stories** (Step 3):
+```gherkin
+Scenario: [Feature name]
+  Given [user context/starting state]
+  When [user action]
+  Then [expected outcome]
+```
+
+## 🚫 Forbidden Language Patterns
+
+### **Marketing/Hype Terms** - NEVER USE:
+- ❌ "Revolutionary", "breakthrough", "game-changing", "cutting-edge"
+- ❌ "Advanced", "sophisticated", "intelligent", "smart" (unless technically accurate)
+- ❌ "Seamless", "effortless", "powerful", "robust" (overused marketing terms)
+- ❌ "State-of-the-art", "next-generation", "innovative", "disruptive"
+
+### **Aspirational Claims** - VERIFY FIRST:
+- ❌ "Comprehensive [feature]" (unless you can prove comprehensive coverage)
+- ❌ "Full support for [technology]" (unless every aspect is implemented)
+- ❌ "Advanced [capability]" (be specific about what's actually advanced)
+- ❌ Future dates in past tense: "Implemented January 2025" (when it's planned)
+
+### **File Path Evidence**
+When documenting code features, include file paths:
+```markdown
+✅ "Authentication handled in `app/services/auth_service.py:45`"
+❌ "Advanced authentication system with JWT management"
+```
+
+
+## Step 1: Core Areas to Explore
+- **Investigation** - What unknowns need resolution?
+- **Expected Behavior** - Use Gherkin scenarios (see framework above)
+- **Core Functionality** - Key user actions
+- **Scope/Boundaries** - What this should NOT do
+- **File Requirements** - What files need changes?
+- **Data Schema** - Backend schema changes needed?
+- **Design/UI** - Missing designs or mockups?
+- **State/Interactions** - Follow [state-management.md](mdc:shared/implementation-plans/03-templates/state-management.md)
+
+## Step 2: Design Clarity Check
+**⚠️ TRIGGER**: For any new screens OR major UI/UX changes beyond small copy/layout adjustments
+
+### 🎨 Screen Design Checklist (Complete BEFORE implementation planning)
+1. **Screen Purpose**: Can I describe this screen's purpose in one sentence?
+   - _"This screen lets the user ___ so they can ___"_
+   - Does every UI element support that purpose?
+
+2. **Input → Output Mapping**: 
+   - What are the user's inputs? (tap, scroll, speak, swipe)
+   - What is the expected output? (data, animation, feedback)
+   - Is the input → output loop visible and fast?
+
+3. **Key Actions Hierarchy**:
+   - What's the ONE main action the user should take?
+   - Is it visually dominant? (size, color, position)
+   - Are secondary actions clearly subordinate?
+
+4. **Layout Skeleton**:
+   - Can I break the layout into 5 or fewer logical blocks?
+   - Are groups visually chunked by function?
+   - Is spacing consistent and breathing?
+
+5. **Visual Chunks & Information Architecture**:
+   - How is information grouped and prioritized?
+   - What's the visual hierarchy (primary → secondary → tertiary)?
+   - Does the layout support one-handed use and glanceability?
+
+6. **Behavior Clarity**:
+   - Write clear Gherkin scenarios for screen interactions (see framework above)
+   - Does the screen do only one job clearly?
+
+**✅ GATE**: Complete design checklist before proceeding to implementation planning
+
+## Step 3: Implementation Plan Components
+- **Goals** - What we're achieving and how
+- **User Stories** - Detailed expected behaviors (use Gherkin framework above)
+- **Functional Requirements** - Numbered, specific functionalities
+- **Non-Goals** - Clear scope boundaries
+- **Success Metrics** - Measurable criteria
+- **Affected Files** - Include file paths (search first!)
+- **Git Strategy** - Branch naming, commit checkpoints
+
+## 🚨 Production Safety - NO MOCKS ALLOWED
+
+## File Discovery Rules
+- **Search First** - Use `codebase_search` before assuming paths
+- **Verify Locations** - Check actual file locations before planning
+- **Read READMEs** - Check frontend/backend guides before creating new endpoints
+- **Check API Contracts** - Reference existing endpoint patterns and data models
+
+## Output Requirements
+- **Format**: Markdown `.md`
+- **Location**: `/implementation-plans/YYYY-MM-DD-[type]-desc.md`
+- **Audience**: Junior developer LLM with no context
+
+
+## Workflow Integration
+1. **PRD Creation** (this rule) → 2. **PRD Review** (@03-prd-review.mdc) → 3. **Task Generation** (@08-generate-tasks.mdc) → 4. **Task Execution** (@09-process-tasks.mdc)
+
+## 🎨 Additional Design States & Considerations
+- **Empty States**: What happens when there's no data?
+- **Loading States**: How do we show processing/network activity?  
+- **Success States**: How do we celebrate completed actions?
+- **Error States**: How do we handle failures gracefully?
+- **Accessibility**: Does it work with VoiceOver and large text?
+- **Emotional Tone**: Does it align with WorkoutVoice's supportive, energetic brand?
+
+
+## Simplicity & Platform API Guidance
+
+> **Guidance for Implementation Plans:**
+>
+> - Favor the simplest solution that meets the requirements.
+> - Leverage Apple platform APIs (e.g., URLSession, Core Data, NWPathMonitor) for networking, persistence, and reachability.
+> - Avoid custom logic for networking, retry, concurrency, or state management unless there is a real, documented need or the user explicitly requests it.
+> - If advanced or defensive patterns (e.g., circuit breakers, exponential backoff, custom thread management) are proposed, include a clear justification for why platform APIs are insufficient.
+> - Overengineering and excessive defensive code should be avoided to ensure maintainability and clarity.
+
+---
+description:
+globs:
+alwaysApply: false
+---
+
+
+

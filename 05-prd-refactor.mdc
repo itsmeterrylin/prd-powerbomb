@@ -1,0 +1,89 @@
+# Code & Documentation Refactoring Rules
+
+
+---
+description: User wants to refactor existing code or documentation for better maintainability.
+globs:
+alwaysApply: false
+---
+
+
+## 🎯 Goal: Safely refactor existing codebase or large documentation
+
+Follow rules in 08-code-quality.mdc
+
+## 📚 Reference Architecture
+- **Frontend**:
+- **Backend**: 
+- **API Contracts**: 
+- **Production Database**: 
+- **Production API**: 
+
+## Required Components
+- **Current State Analysis** - What exists now and why it needs refactoring
+- **Refactor Goals** - Clear objectives (readability, performance, maintainability)
+- **Before/After Structure** - Specific file organization changes
+- **Safety Strategy** - Git commits, rollback plan, testing approach
+- **QA Strategy** - How to verify refactor didn't break functionality
+
+## 🧠 LLM Debt Cleanup Guidelines
+*Evidence-First Approach - Search for usage before assuming complexity is needed*
+
+### **Target Over-Engineering Patterns**
+- Enterprise retry policies → Basic retry counter
+- Complex fallback chains → Single default value
+- Mock/test data in production → Remove or DEBUG-only
+- Elaborate defensive programming → Simple platform API usage
+
+### **Preserve Working Systems**
+- Platform APIs used correctly (NWPathMonitor, async/await)
+- Simple, functional code that works
+- User-facing features that perform well
+
+## 🗂️ File Management Strategy
+
+### **Phase 1: Refactor & Migrate**
+1. **Create New Structure** - Build new files/organization
+2. **Update References** - Change all imports/links to new files
+3. **Test Thoroughly** - Verify all functionality works
+
+### **Phase 2: Cleanup & Removal**
+- **Final Verification** - Confirm no active references to old files
+- **Archive or Delete** - Move to `archive/YYYY-MM-DD-refactor-[name]/` or remove entirely
+- **Update Documentation** - Remove all references to old file paths
+
+## 🚨 Production Safety
+**LIVE APP with real users. Refactor must maintain functionality.**
+
+**Safety First:** Git commit → Refactor → Test → Verify → Cleanup
+
+## Common Refactor Types
+
+### **Large File Splitting (>500 lines)**
+- Extract related functionality into focused modules
+- Maintain import relationships and public interfaces
+
+### **Documentation Restructuring**
+- Break large docs into focused topics
+- Create clear navigation and cross-references
+
+### **Dead Code Cleanup**
+- Find unused imports, functions, variables
+- Remove safely with git commits for easy rollback
+
+## Output Requirements
+- **Format**: Markdown `.md`
+- **Location**: `shared/implementation-plans/YYYY-MM-DD-refactor-[desc].md`
+- **Workflow**: Refactor Analysis → PRD Review (@03-prd-review.mdc) → Task Execution (@04-prd-execute.mdc)
+
+## 🛑 Stop Conditions
+- Breaking changes detected → Fix before continuing
+- Tests fail → Address before proceeding
+- User functionality impacted → Rollback and reassess
+
+
+## 🔧 Refactoring Rules
+- **Confirm before changes** - Verify approach with user
+- **Real APIs only** - No mocks during refactoring
+- **Git-revertable** - Commit before major changes
+- **Break down large files** - Split >500 line files into focused modules

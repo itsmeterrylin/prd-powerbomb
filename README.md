@@ -30,14 +30,12 @@ prd-powerbomb/
 This project uses custom Cursor AI rules to enhance development workflows:
 
 - **01-communication-rules.mdc**: Communication guidelines and standards
-- **02-prd-create.mdc**: PRD creation workflows and templates
-- **03-prd-review.mdc**: PRD review processes and quality checks
+- **02-prd-create.mdc**: Converts ideas/feature requests into hybrid PRD/tech spec documents
+- **03-prd-review.mdc**: Converts PRD into phased checklist with git safety measures
 - **04-prd-execute.mdc**: Execution guidelines and implementation workflows
-- **05-prd-refactor.mdc**: Refactoring rules and best practices
-- **06-linear-import.mdc**: Linear integration and import workflows
-- **07-rubberduck.mdc**: Rubber duck debugging assistance
-- **08-code-quality.mdc**: Code quality standards and guidelines
-- **09-swift-rules.mdc**: Swift-specific development rules
+- **05-prd-refactor.mdc**: Breaks down unmanageable codebases into smaller, maintainable chunks
+- **06-prd-rubberduck.mdc**: AI-assisted debugging when LLM gets stuck, useful for learning
+- **07-code-quality.mdc**: Prevents bad AI-generated code patterns and "AI slop"
 
 ## Getting Started
 
@@ -85,8 +83,6 @@ When you have a new feature idea or requirement:
 - **Debugging**: Use `07-rubberduck.mdc` for AI-assisted debugging. This is for when the LLM gets stuck, and you need to rubber duck the problem to get past something. Also useful for your own learning if you are new to coding.
 
 - **Code Quality**: Follow `08-code-quality.mdc` standards. LLMs can generate very bad code such as nested logic with 9 layers deep. This rule is to avoid scenarios like that with very bad AI slop.
-
-- **Swift Development**: Apply `09-swift-rules.mdc` for iOS projects
 
 The Cursor rules provide AI assistance for:
 - Creating structured PRDs

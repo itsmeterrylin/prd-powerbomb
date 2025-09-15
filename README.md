@@ -6,7 +6,7 @@ A comprehensive Product Requirements Document (PRD) management system for coding
 
 ## Overview
 
-PRD PowerBomb is designed to streamline the product development process by providing structured workflows for creating, reviewing, and executing product requirements documents. 
+PRD PowerBomb is designed to streamline the product development process by providing structured workflows for creating, reviewing, and executing product requirements documents with LLM coding agents.
 
 ## Features
 
@@ -29,7 +29,7 @@ prd-powerbomb/
 
 ## Cursor Rules
 
-This project uses custom Cursor AI rules to enhance development workflows:
+This project uses custom Cursor AI rules to enhance development workflows. It is also applicable to other coding agents such as Claude Code or Codex.
 
 - **01-communication-rules.mdc**: Communication guidelines and standards
 - **02-prd-create.mdc**: Converts ideas/feature requests into hybrid PRD/tech spec documents

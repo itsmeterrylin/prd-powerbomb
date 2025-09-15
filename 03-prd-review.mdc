@@ -1,5 +1,5 @@
 ---
-description: User has an existing implementation plan and wants to check before development handoff.
+description: User has an existing implementation plan and wants to check before development handoff to a newly onboarded developer on Day 1.
 globs:
 alwaysApply: false
 ---
@@ -8,81 +8,262 @@ alwaysApply: false
 
 ## 🎯 Goal: Convert implementation plans to executable format before development handoff
 
+## 🚨 MANDATORY VALIDATION GATES
+
+### Gate 1: PRD Format Validation
+- [ ] **Implementation Assumptions section exists** (search for "## Implementation Assumptions" or "## 🔍 Implementation Assumptions")
+- [ ] **Section has >3 items** (not just placeholder text)
+- [ ] **Each assumption has confidence level** (CERTAIN/LIKELY/UNCERTAIN/HOPED/ASSUMED)
+
+**If ANY check fails:**
+```
+❌ STOP - PRD Missing Implementation Assumptions Section
+👈 RETURN TO: @02-prd-create.mdc to add assumptions before review
+🚫 FORBIDDEN: Generating assumptions during review phase
+```
+
+### Gate 2: Documentation-First Protocol
+**BEFORE any code analysis or assumption verification:**
+
+#### Backend Changes Required?
+- [ ] **Run ALL verification commands** from relevant `{{PROJECT_DOCS_PATH}}/backend/` sections
+- [ ] **Document results** with actual output (not "looks correct")
+- [ ] **If ANY command fails** → STOP, assumptions are wrong, return to creation
+
+#### Frontend Changes Required?
+- [ ] **Check component dependency documentation** at `{{COMPONENT_DEPENDENCY_MAP_PATH}}`
+- [ ] **Verify actual patterns** via grep commands in docs
+- [ ] **If patterns don't match** → STOP, assumptions are wrong, return to creation
+
+**FORBIDDEN: Proceeding without completing documentation verification first**
 
 ## Review Protocol
 1. **Read PRD** - Understand scope and requirements
-2. **Verify Files** - Use codebase_search to confirm all mentioned paths exist
-3. **Convert Format** - ALWAYS restructure into executable checklist format, 3 tasks per phase maximum, each phase with a git commit
-4. **Rate Completeness** - Score /10 with specific gaps identified
-5. **User Approval** - Wait for "approved" before proceeding
+2. **Extract Assumptions** - Find "Implementation Assumptions" section (verified in Gate 1)
+3. **🚨 CRITICAL: Deep Current State Audit** - Verify every assumption against actual codebase (after Gate 2)
+4. **Audit Results Analysis** - Categorize: VERIFIED ✅, MISSING ❌, DIFFERENT 🔄
+5. **If >50% assumptions fail**: Generate simplicity recommendations, get user approval to pivot
+6. **Verify Files** - Use codebase_search to confirm all mentioned paths exist
+7. **Convert Format** - ALWAYS restructure into executable checklist format, 3 tasks per phase maximum, each phase with a git commit
+8. **Rate Completeness** - Score /10 with specific gaps identified
+9. **User Approval** - Wait for "approved" before proceeding
+
+### **🔍 MANDATORY: Current State Deep Audit**
+
+**Step 1: Extract All Assumptions from PRD "Implementation Assumptions" Section**
+
+**Step 2: Systematically verify each assumption against actual codebase:**
+
+#### For State Management/Authentication Plans:
+- [ ] **Property Verification**: Read complete class - do ALL @Published properties mentioned actually exist?
+- [ ] **Method Signature Check**: Do methods mentioned have the exact signatures assumed?
+- [ ] **Initialization Sequence**: Trace actual init() flow - what really happens on app launch?
+- [ ] **State Transitions**: Map actual updateState() calls - does current code handle proposed transitions?
+- [ ] **Platform Differences**: Check #if os() blocks for actual platform differences
+
+#### For UI/ContentView Plans:
+- [ ] **View Hierarchy**: Read complete View file - verify actual UI structure matches assumptions
+- [ ] **State Binding**: Confirm @ObservedObject/@StateObject bindings actually exist as described
+- [ ] **Navigation Flow**: Trace actual navigation logic - verify navigation patterns
+- [ ] **Animation/Transition**: Verify existing transition code matches proposed changes
+- [ ] **Design System API**: MANDATORY verify design system components before ANY component creation
+
+#### For API/Backend Plans:
+- [ ] **Endpoint Verification**: `grep -rn "@router\\." {{BACKEND_PATH}}/api/` - check actual routes
+- [ ] **Service Classes**: `grep -rn "class.*Service\\|class.*Handler" {{BACKEND_PATH}}/services/` - verify names
+- [ ] **Documentation Cross-Check**: Read `{{PROJECT_DOCS_PATH}}/backend/` before assuming patterns
+- [ ] **Database Schema**: Use database tools to verify actual table columns
+- [ ] **Model Matching**: Verify data models match proposed request/response structures
+
+#### For Service Layer Plans:
+- [ ] **Service Instantiation**: Verify how services are actually created and injected
+- [ ] **Method Implementations**: Read complete service methods - do they work as assumed?
+- [ ] **Dependency Chain**: Map actual service dependencies
+- [ ] **Async Patterns**: Confirm actual async/await usage matches proposed changes
+
+### **🚨 Red Flags Requiring Deep Audit:**
+
+1. **"Update method X to do Y"** → Read method X completely, verify current signature/logic
+2. **"Set property Z to..."** → Verify property Z exists and is @Published/@State as expected
+3. **"This will trigger..."** → Trace actual code path to confirm the trigger exists
+4. **"Add loading state"** → Verify no existing loading state management exists
+5. **"Platform-specific behavior"** → Check actual platform-specific implementations
 
 ### **Self-Review Questions**:
 1. Could a new developer hire with no context follow this documentation and succeed?
-2. Are all technical claims verifiable in the codebase?
+2. Are all technical claims verifiable in the codebase **RIGHT NOW**?
 3. Have I avoided marketing language in favor of technical accuracy?
-4. Do the examples match the actual API/UI behavior?
+4. Do the examples match the actual API/UI behavior **AS IMPLEMENTED**?
 5. Are limitations and current boundaries clearly stated?
+6. **Have I verified every implementation assumption against the actual current codebase?**
+7. **Have I completed mandatory naming consistency audit to prevent tech debt?**
 
+## 📋 Update Existing Plan Structure
 
-## 📋 MANDATORY: Convert to This Exact Format
+**ALWAYS update the original plan in-place with executable format:**
 
-**ALWAYS restructure implementation plans into this format:**
-
-```markdown
-# [Title] - Executable Implementation Plan
-
-**Date**: [Date]
-**Type**: [Backend/Frontend/Tech Debt/Full Stack]
-**Priority**: [High/Medium/Low]
-**Status**: [Planning/In Progress/Complete]
-
-## 🎯 Summary
-[1-2 sentence summary of what's being implemented]
-
-## Relevant Files
-- `path/to/file.swift` - Brief description of file's purpose
-- `path/to/file.py` - Brief description of file's purpose
-
-## Tasks
-
-### [Phase] (1.0) - [Category]
-- [ ] 1.0 `git commit -m "[Layer]: [Brief description of goal for this phase]"`
-- [ ] 1.1 [Specific task description]
-- [ ] 1.2 [Specific task description]
-- [ ] 1.3 [Specific task description]
-- [ ] 1.4 [Specific QA validation command/test]
-- [ ] 1.5 [Pause for user confirmation before next phase]
-
-### [Phase] (2.0) - [Category]
-- [ ] 2.0 `git commit -m "[Layer]: [Brief description of goal for this phase]"`
-- [ ] 2.1 [Specific task description]
-- [ ] 2.2 [Specific task description]
-- [ ] 2.3 [Specific task description]
-- [ ] 2.4 [Specific QA validation command/test]
-- [ ] 2.5 [Pause for user confirmation before next phase]
-
-## Phase Rules
-- **3 tasks maximum** per phase (X.1, X.2, X.3)
-- **Git commit** placeholder for each phase (X.0)
-
-## Production Safety Checklist
-- [ ] **Verify Paths** - All file locations confirmed via codebase search
-- [ ] **Real Data Only** - Actual Supabase tables, Railway endpoints
-- [ ] **No Placeholders** - All code must be production-ready
-- [ ] **Error Handling** - Include proper validation and error states
-- [ ] **User Experience** - No breaking changes to existing functionality
-- [ ] **Performance** - Minimal impact on app/API performance
+- Add **Tasks** section with numbered phases
+- Add **Phase Rules** for execution guidance
+- Add **Production Safety Checklist**
+- Update **Status** field to indicate review completion
+- Keep all original content (user stories, requirements, assumptions)
 
 ## AI Instructions
-1. **ALWAYS Convert Format** - Never approve a plan without converting to the exact format above
-2. **Verify All Paths** - Use codebase_search to confirm every file mentioned
-3. **Layer Classification** - Properly categorize tasks by execution layer
-4. **Production Safety** - Ensure no mocks, stubs, truncation, dummy, fallback, or placeholder code
-5. **Simplicity Check** - Use Apple platform APIs where possible, avoid overengineering
+1. **🚨 MANDATORY DEEP AUDIT FIRST** - Never approve ANY plan without completing the Current State Deep Audit above
+2. **UPDATE EXISTING PLAN** - Add executable sections to original document, don't create separate files
+3. **Verify All Paths** - Use codebase_search to confirm every file mentioned
+4. **Layer Classification** - Properly categorize tasks by execution layer
+5. **Production Safety** - Ensure no mocks, stubs, truncation, dummy, fallback, or placeholder code
+6. **Simplicity Check** - Use platform APIs where possible, avoid overengineering
+7. **Refactoring Safety** - For plans involving code deletion/refactoring, apply mandatory safety protocols
 
-## 📚 Reference Architecture
-- **Frontend**: 
-- **Backend**:  
-- **API Contracts**: 
-- **MCP for Production Database**: 
-- **Production API**: 
+### **Implementation Assumption Verification Protocol**
+
+**For EVERY implementation plan, systematically verify:**
+
+```markdown
+## Current State Audit Results
+
+### Properties/Methods Verified
+- [ ] `{{Manager}}.{{property}}` exists: ✅ @Published {{Type}} = {{default}} (line {{N}})
+- [ ] `{{Manager}}.{{loadingProperty}}` exists: ❌ MISSING - needs to be ADDED
+- [ ] `{{method}}()` signature: ✅ Confirmed (line {{N}}) - BUT needs modification for loading state
+
+### Initialization Flow Traced
+- [ ] {{Manager}}.init() calls: ✅ {{setupMethod}}() + {{loadMethod}}() (lines {{N}}-{{N}})
+- [ ] Race condition confirmed: ✅ {{property}}=false → UI shows {{state}} → async tasks validate
+- [ ] Platform additional flow: ✅ {{additionalMethod}}() + network call (lines {{N}}, {{N}}-{{N}})
+
+### Gap Analysis
+- **Missing**: {{property}} property (needs ADD)
+- **Incomplete**: {{method}}() method (needs MODIFY)
+- **Current Logic**: Matches problem description - issue exists as claimed
+```
+
+**This audit MUST be completed before writing any implementation tasks.**
+
+### **🔍 MANDATORY: Anti-Duplication Audit**
+
+**BEFORE writing ANY "Create/Implement" tasks:**
+
+```bash
+# Replace {thing} with what you're creating (30-second audit)
+grep -rn "{thing}\\|{similar}" {dir}/
+```
+
+**Decision:**
+- Found similar → Extend existing
+- Found nothing → Create new
+
+**❌ FORBIDDEN Planning Language:**
+- "Create X" → "Audit for X, extend existing or create new"
+- "Implement Y" → "Check existing Y functions first"
+
+**Common Patterns:**
+```bash
+# Functions: grep -rn "calculate|process|validate"
+# Components: grep -rn "View|Service|Model"
+# Logic: grep -rn "{domain_keyword}"
+```
+
+### **🔍 MANDATORY: Naming Consistency Audit**
+
+**BEFORE writing tasks involving database fields or API endpoints:**
+
+```bash
+# Schema verification (5 minutes max)
+grep -rn "target_field\\|target_table" {{BACKEND_PATH}}/models/
+grep -rn "/target_endpoint\\|target_param" {{BACKEND_PATH}}/api/
+grep -rn "targetMethod\\|targetService" {{FRONTEND_PATH}}/**/*.{{EXTENSION}}
+```
+
+**Documentation Cross-Reference (REQUIRED):**
+- Check `{{PROJECT_DOCS_PATH}}/backend/` - contains verified implementation with proof commands
+- Check `{{PROJECT_DOCS_PATH}}/api-contracts/` for field naming standards
+- Cross-verify class names vs docs
+
+**Assumption → Verification Command Mapping:**
+- **Backend Endpoint Assumption** → `grep -rn "@router\\." {{BACKEND_PATH}}/api/` + check actual route
+- **Service Class Assumption** → `grep -rn "class.*Service" {{BACKEND_PATH}}/services/` + read class
+- **Database Field Assumption** → Use database inspection tools
+- **Frontend Property Assumption** → `grep -rn "@Published.*propertyName" {{FRONTEND_PATH}}/`
+- **Method Assumption** → `grep -A 10 -B 5 "func methodName" {{PROJECT_PATH}}/`
+- **Design System Assumption** → Check design system files for available components
+
+**Implementation Rules:**
+- ❌ NEVER approve plans with unverified assumptions
+- ❌ NEVER proceed without "Current State Audit Results" section complete
+- ❌ NEVER allow "Create/Implement" tasks without duplication audit
+- ✅ ALWAYS verify every item from PRD "Implementation Assumptions" section
+- ✅ ALWAYS document audit results with actual file:line references
+- ✅ ALWAYS check for existing implementations before creating new ones
+
+## 🚨 FAILED AUDIT RESPONSE (>50% assumptions wrong)
+
+### Step 1: Present 3 Options by Complexity
+- **Option 1 (Minimal)**: Use existing patterns, 1-2 phases
+- **Option 2 (Moderate)**: New service following existing approach, 2-3 phases
+- **Option 3 (Full)**: Original vision, 5+ phases, high complexity
+
+### Step 2: User Decision Required
+**DECISION NEEDED**: Choose Option 1/2/3 or pause to rethink requirements
+
+## 🚀 LARGE REFACTOR METHODOLOGY
+
+**Success Framework**: Proven approach for complex cross-stack changes with minimal production errors
+
+### Pre-Implementation Deep Audit Protocol (60% of Total Effort)
+
+**System-Wide Dependency Analysis:**
+```bash
+# Complete dependency mapping BEFORE any code changes
+grep -rn "target_pattern" . > usage-analysis.txt
+find . -name "*.{{EXTENSION1}}" -exec grep -l "target_pattern" {} \\; > affected-files-1.txt
+find . -name "*.{{EXTENSION2}}" -exec grep -l "target_pattern" {} \\; > affected-files-2.txt
+
+# Blast radius assessment
+wc -l usage-analysis.txt  # >20 lines = major refactor requiring phased approach
+```
+
+**Database Schema Deep Audit (Critical):**
+```sql
+-- MANDATORY: Check constraints before removing/changing fields
+SELECT column_name, is_nullable, column_default, table_name
+FROM information_schema.columns
+WHERE table_name='target_table' AND is_nullable='NO';
+
+-- Check table constraints that might block changes
+SELECT * FROM information_schema.table_constraints
+WHERE table_name='target_table';
+```
+
+**Decision Matrix Based on Scope:**
+- **<10 files affected**: Standard change process
+- **10-20 files affected**: Phased approach required with validation gates
+- **>20 files affected**: Consider architectural redesign instead of refactor
+
+### Enhanced Phased Implementation Rules
+
+**Phase Structure Template (3 Tasks + Validation Gate):**
+```markdown
+### Phase N (X.Y) - Descriptive Phase Name
+- [ ] X.0 `git commit -m "layer: specific phase goal"`
+- [ ] X.1 Specific change with exact file:line reference
+- [ ] X.2 Specific change with exact file:line reference
+- [ ] X.3 Specific change with exact file:line reference
+- [ ] X.4 Build validation + specific test commands
+- [ ] X.5 User confirmation checkpoint before next phase
+```
+
+### Documentation Standards
+- **Zero Placeholders**: Reference actual file:line numbers only
+- **Immediate Auditability**: All claims verifiable in current codebase
+- **Path Verification**: Confirm all file locations exist
+
+## 📚 Reference Architecture (CUSTOMIZE FOR YOUR PROJECT)
+- **Frontend**: {{FRONTEND_ARCHITECTURE}} - Your frontend patterns
+- **Backend**: {{BACKEND_ARCHITECTURE}} - Your backend services and API endpoints
+- **API Contracts**: {{API_CONTRACTS_PATH}} - Complete API specifications
+- **Production Database**: {{DATABASE_PROVIDER}} (`{{DATABASE_PROJECT_ID}}`)
+- **Production API**: `{{PRODUCTION_API_URL}}`
+- **CLI Tools**: Your deployment and database CLI commands

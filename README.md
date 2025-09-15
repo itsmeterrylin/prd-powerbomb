@@ -29,7 +29,7 @@ prd-powerbomb/
 
 ## Cursor Rules
 
-This project uses custom Cursor AI rules to enhance development workflows. It is also applicable to other coding agents such as Claude Code or Codex.
+This project uses custom Cursor AI rules to enhance development workflows. 
 
 - **01-communication-rules.mdc**: Communication guidelines and standards
 - **02-prd-create.mdc**: Converts ideas/feature requests into hybrid PRD/tech spec documents
@@ -47,7 +47,7 @@ This project uses custom Cursor AI rules to enhance development workflows. It is
    cd prd-powerbomb
    ```
 
-2. The project is ready to use with Cursor AI rules already configured.
+2. The project is ready to use with Cursor AI rules already configured. It is also usable with other coding agents such as Claude Code or Codex by simply @ the specific rule files.
 
 ## Usage
 

@@ -10,44 +10,62 @@ alwaysApply: false
 
 **Prerequisites**: Plan reviewed and converted to executable format via @03-prd-review.mdc
 
-
 ### **Pre-Execution**
 1. Verify plan follows exact format from @03-prd-review.mdc
 2. Confirm all file paths exist via codebase_search
 3. Start with first uncompleted `[ ]` task
 
-### **Task Execution**  
+### **Task Execution**
 1. **Find Next Task** - First uncompleted `[ ]` item
 2. **Execute** - Complete single task only
 3. **QA** - Run appropriate layer validation commands
 4. **Mark Complete** - Update `[x]`, save file, get user "yes"
 5. **Git Commit** - Add commit ID when phase complete
 6. **Update Status** - Change section to `✅ [COMPLETED]` when phase done
-- **QA Gates** - Complete QA after each phase before proceeding
-- **PAUSE after each phase** and await user confirmation to proceed
-
+7. **QA Gates** - Complete QA after each phase before proceeding
+8. **PAUSE after each phase** and await user confirmation to proceed
 
 ## QA Validation Steps
 1. **[Layer] Test** - Specific validation command/test
 2. **Integration** - End-to-end validation
 3. **Build Verification** - No compilation errors/warnings
-4. **User Validation Scenarios** - Propose Manual QA confirmation user should take
+4. **User Validation Scenarios** - Propose manual QA confirmation user should take
 
-## 🏗️ Phase Execution Order (Backend to Frontend where applicable)
+## 🏗️ Phase Execution Order (Customize for your stack)
 1. **Database (1.0)** → QA Validation
-2. **Backend (2.0)** → QA Validation  
-3. **Network (3.0)** → QA Validation
+2. **Backend (2.0)** → QA Validation
+3. **Network/API (3.0)** → QA Validation
 4. **Frontend (4.0)** → QA Validation
 5. **Tech Debt (5.0)** → QA Validation
 
 ## 🛑 Stop Conditions
 - Plan format incorrect → redirect to @03-prd-review.mdc
 - Build/test fails → fix before continuing
-- Failing to fix after 3 tries → pause and redirect to @09-rubberduck.mdc
+- Failing to fix after 3 tries → pause and redirect to @07-rubberduck.mdc
 - User rejects QA results → address issues
 - Placeholder/mock code detected → remove before proceeding
 
-## 🧪 QA Commands by Layer
+## 🧪 QA Commands by Layer (CUSTOMIZE FOR YOUR STACK)
+
+```bash
+# Database QA (customize for your database)
+{{DATABASE_TEST_COMMAND}}
+{{DATABASE_QUERY_COMMAND}}
+
+# Backend QA (customize for your framework)
+{{BACKEND_TEST_COMMAND}}
+{{BACKEND_BUILD_CHECK}}
+{{BACKEND_HEALTH_CHECK}}
+
+# Frontend QA (customize for your platform)
+{{FRONTEND_BUILD_COMMAND}}
+{{FRONTEND_TEST_COMMAND}}
+
+# Build Validation (after every change)
+{{PRIMARY_BUILD_COMMAND}}
+
+# Production Deployment (backend changes)
+{{DEPLOYMENT_COMMAND}} && {{DEPLOYMENT_STATUS}} && {{DEPLOYMENT_LOGS}}
 ```
 
 ## 🎯 Success Metrics
@@ -55,3 +73,52 @@ alwaysApply: false
 - **Test Status** - All tests passing
 - **User Experience** - No regressions introduced
 - **Production Safety** - No placeholders/mocks deployed
+
+# Code Execution Guidelines
+
+## Platform-Specific Standards (CUSTOMIZE FOR YOUR STACK)
+
+### Frontend Standards
+- **Platform**: {{FRONTEND_PLATFORM}} (e.g., iOS Simulator, Chrome Browser)
+- **UI/UX**: Follow {{UI_GUIDELINES}} (e.g., Apple HIG, Material Design)
+- **File size**: ≤{{MAX_LINES}} lines (warn if >{{WARN_LINES}})
+- **No hardcoded secrets** - use .env/config files
+- **Timezone**: {{TIMEZONE_STANDARD}} - Use {{DATE_FORMAT}} format
+- **Build**: {{BUILD_INSTRUCTIONS}}
+
+### Backend Standards
+- **Environment**: {{RUNTIME_ENVIRONMENT}}
+- **Framework**: {{BACKEND_FRAMEWORK}}
+- **Testing**: {{TEST_FRAMEWORK}} and {{TEST_COMMAND}}
+- **Deployment**: {{DEPLOYMENT_PLATFORM}}
+- **Database**: {{DATABASE_PROVIDER}}
+
+## 🚨 Production Safety
+- **No mocks/placeholders** in production code
+- **Real environments** - {{DATABASE_PROVIDER}}, {{DEPLOYMENT_PLATFORM}} endpoints
+- **Proper error handling** for user-facing features
+- **Flag placeholders** with `{{PLACEHOLDER_COMMENT}}` + chat notice
+
+## Example Customization Template
+
+Replace these placeholders with your actual commands:
+
+```bash
+# Database Commands
+DATABASE_TEST_COMMAND="pytest tests/database/ -v"
+DATABASE_QUERY_COMMAND="{{DB_CLI}} -e 'SELECT * FROM {{table}} LIMIT 1'"
+
+# Backend Commands
+BACKEND_TEST_COMMAND="{{TEST_FRAMEWORK}} {{TEST_PATH}} -v"
+BACKEND_BUILD_CHECK="{{COMPILER}} {{SOURCE_FILE}}"
+BACKEND_HEALTH_CHECK="curl {{API_BASE}}/health"
+
+# Frontend Commands
+FRONTEND_BUILD_COMMAND="{{BUILD_TOOL}} build"
+FRONTEND_TEST_COMMAND="{{TEST_RUNNER}} {{TEST_SUITE}}"
+
+# Deployment Commands
+DEPLOYMENT_COMMAND="{{DEPLOY_TOOL}} deploy"
+DEPLOYMENT_STATUS="{{DEPLOY_TOOL}} status"
+DEPLOYMENT_LOGS="{{DEPLOY_TOOL}} logs"
+```

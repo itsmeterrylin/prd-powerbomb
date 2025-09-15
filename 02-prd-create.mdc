@@ -1,24 +1,23 @@
 ---
 description: User mentions creating an implementation plan, create a doc, or start a plan, follow these rules to create that plan.
-globs: 
+globs:
 alwaysApply: false
 ---
 # PRD Creation Rules
 
-## 🎯 Goal: Create comprehensive implementation plans for features, do not create fallback logic unless user specifies to do so.
+## 🎯 Goal: Create comprehensive implementation plans for features
 
-## 📚 Reference Architecture
-- **Frontend**: 
-- **Backend**: 
-- **API Contracts**: 
-- **Documentation Standards**: 
-- **Production Database**: 
-- **Production API**:
+## 📚 Reference Architecture (CUSTOMIZE FOR YOUR PROJECT)
+- **Frontend**: {{FRONTEND_DOCS_PATH}} - Your frontend architecture and patterns
+- **Backend**: {{BACKEND_DOCS_PATH}} - Your backend services and API endpoints
+- **API Contracts**: {{API_DOCS_PATH}} - Complete API specifications
+- **Documentation Standards**: {{DOCUMENTATION_STANDARDS_PATH}} - Evidence-based documentation
+- **Production Database**: {{DATABASE_PROVIDER}} (`{{DATABASE_PROJECT_ID}}`)
+- **Production API**: `{{PRODUCTION_API_URL}}`
 
 ## Required Components
-- **Current Date**: Check system time for timestamps
 - **Summary** - Clear goal statement
-- **User Stories** - Expected behaviors (Gherkin Framework)
+- **User Stories** - Expected behaviors (see Gherkin Framework below)
 - **Affected Files** - Real file paths (use codebase_search first)
 - **Git Strategy** - Branch naming for entire plan, commit checkpoints for each phase
 - **QA Strategy** - LLM self-test + manual user verification
@@ -32,6 +31,22 @@ Scenario: [Feature name]
   Given [user context/starting state]
   When [user action]
   Then [expected outcome]
+```
+
+### **Screen Behaviors** (Step 2 Design):
+```gherkin
+Scenario: [Screen interaction]
+  Given [screen state]
+  When [user interaction]
+  Then [UI response/feedback]
+```
+
+### **Technical Validation** (QA):
+```gherkin
+Scenario: [Technical requirement]
+  Given [system state]
+  When [trigger event]
+  Then [expected system behavior]
 ```
 
 ## 🚫 Forbidden Language Patterns
@@ -51,10 +66,9 @@ Scenario: [Feature name]
 ### **File Path Evidence**
 When documenting code features, include file paths:
 ```markdown
-✅ "Authentication handled in `app/services/auth_service.py:45`"
+✅ "Authentication handled in `{{PROJECT_PATH}}/services/auth_service.py:45`"
 ❌ "Advanced authentication system with JWT management"
 ```
-
 
 ## Step 1: Core Areas to Explore
 - **Investigation** - What unknowns need resolution?
@@ -62,9 +76,9 @@ When documenting code features, include file paths:
 - **Core Functionality** - Key user actions
 - **Scope/Boundaries** - What this should NOT do
 - **File Requirements** - What files need changes?
-- **Data Schema** - Backend schema changes needed?
+- **Data Schema** - Database schema changes needed?
 - **Design/UI** - Missing designs or mockups?
-- **State/Interactions** - Follow [state-management.md](mdc:shared/implementation-plans/03-templates/state-management.md)
+- **State/Interactions** - Follow your project's state management patterns
 
 ## Step 2: Design Clarity Check
 **⚠️ TRIGGER**: For any new screens OR major UI/UX changes beyond small copy/layout adjustments
@@ -74,7 +88,7 @@ When documenting code features, include file paths:
    - _"This screen lets the user ___ so they can ___"_
    - Does every UI element support that purpose?
 
-2. **Input → Output Mapping**: 
+2. **Input → Output Mapping**:
    - What are the user's inputs? (tap, scroll, speak, swipe)
    - What is the expected output? (data, animation, feedback)
    - Is the input → output loop visible and fast?
@@ -92,10 +106,10 @@ When documenting code features, include file paths:
 5. **Visual Chunks & Information Architecture**:
    - How is information grouped and prioritized?
    - What's the visual hierarchy (primary → secondary → tertiary)?
-   - Does the layout support one-handed use and glanceability?
+   - Does the layout support your platform's interaction patterns?
 
 6. **Behavior Clarity**:
-   - Write clear Gherkin scenarios for screen interactions (see framework above)
+   - Write clear Gherkin scenarios for screen interactions
    - Does the screen do only one job clearly?
 
 **✅ GATE**: Complete design checklist before proceeding to implementation planning
@@ -107,49 +121,93 @@ When documenting code features, include file paths:
 - **Non-Goals** - Clear scope boundaries
 - **Success Metrics** - Measurable criteria
 - **Affected Files** - Include file paths (search first!)
+- **🔍 Implementation Assumptions** - REQUIRED for review handoff (see below)
 - **Git Strategy** - Branch naming, commit checkpoints
 
+## 🔍 Implementation Assumptions Section (MANDATORY)
+
+**ALWAYS include this section to track what needs verification during PRD Review:**
+
+### Backend Assumptions (MUST AUDIT)
+- **API Endpoints**: List assumed endpoints (e.g., `POST {{API_BASE}}/{{RESOURCE}}/analytics`)
+- **Service Classes**: List assumed classes (e.g., `{{ServiceName}}Service`, `{{HandlerName}}Handler`)
+- **Database Fields**: List assumed columns/tables (e.g., `{{table}}.{{field}}`, `analytics.chart_data`)
+- **Existing Methods**: List assumed methods (e.g., `{{Service}}.calculateStats()`)
+
+### Frontend Assumptions (MUST AUDIT)
+- **View Properties**: List assumed @Published properties (e.g., `ViewModel.isLoading`, `Manager.currentState`)
+- **Methods**: List assumed methods (e.g., `{{Manager}}.updateState()`, `{{View}}.startAction()`)
+- **Navigation**: List assumed flows (e.g., `{{MainView}} → {{TabView}} → {{FeatureView}}`)
+- **State Bindings**: List assumed bindings (e.g., `@StateObject {{manager}}`, `@ObservedObject {{viewModel}}`)
+
+### Database Schema Assumptions (MUST AUDIT)
+- **Tables**: List assumed tables exist (e.g., `analytics`, `user_preferences`)
+- **Columns**: List assumed columns (e.g., `{{table}}.{{field}}`, `exercises.category_id`)
+- **Relationships**: List assumed foreign keys (e.g., `{{child_table}}.{{parent_id}} → {{parent_table}}.id`)
+
+### Example Implementation Assumptions:
+```markdown
+## 🔍 Implementation Assumptions
+
+### Backend Assumptions (MUST AUDIT)
+- API Endpoint: `GET {{API_BASE}}/analytics/{{resource}}/charts` (UNCERTAIN - might not exist)
+- Service Class: `{{AnalyticsService}}.calculate_kpis()` (ASSUMED - don't know actual service structure)
+- Database Field: `{{table}}.{{metric_field}}` (HOPED - unsure if metric data exists)
+
+### Frontend Assumptions (MUST AUDIT)
+- Property: `{{AnalyticsViewModel}}.chartData` (@Published) (GUESSED - don't know actual ViewModel structure)
+- Method: `{{AnalyticsService}}.fetchStats()` (ASSUMED - might use different pattern)
+- Navigation: `{{HistoryView}} → {{DetailView}}` (UNCERTAIN - navigation might be different)
+
+### Database Schema Assumptions (MUST AUDIT)
+- Table: `{{analytics_table}}` (ASSUMED - might not exist, might use different structure)
+- Column: `{{table}}.{{calculated_field}}` (GUESSED - unsure if this calculated field exists)
+```
+
+**Confidence Levels for Assumptions:**
+- **CERTAIN**: 95%+ sure this exists/works as described
+- **LIKELY**: 70%+ sure, based on similar patterns in codebase
+- **UNCERTAIN**: 50/50, educated guess
+- **HOPED**: <30% sure, wishful thinking
+- **ASSUMED**: No verification, pure assumption
+
+**Purpose**: These assumptions become the audit checklist for `@03-prd-review.mdc`. Be honest about uncertainty!
+
 ## 🚨 Production Safety - NO MOCKS ALLOWED
+**LIVE APPLICATION with real users. NO mock data/endpoints/functions/placeholders.**
+
+**Production Pipeline**: {{DATABASE}} → {{BACKEND_FRAMEWORK}} → {{API_LAYER}} → {{CLIENT_SDK}} → {{FRONTEND}}
 
 ## File Discovery Rules
 - **Search First** - Use `codebase_search` before assuming paths
 - **Verify Locations** - Check actual file locations before planning
-- **Read READMEs** - Check frontend/backend guides before creating new endpoints
+- **Read Architecture Docs** - Check your project's architecture guides before creating new patterns
 - **Check API Contracts** - Reference existing endpoint patterns and data models
 
 ## Output Requirements
 - **Format**: Markdown `.md`
-- **Location**: `/implementation-plans/YYYY-MM-DD-[type]-desc.md`
-- **Audience**: Junior developer LLM with no context
-
+- **Location**: `{{IMPLEMENTATION_PLANS_PATH}}/YYYY-MM-DD-[type]-desc.md`
+- **Audience**: Junior developer with no context
+- **Documentation Standards**: Follow evidence-based documentation principles
+- **Current Date**: Check system time for timestamps
 
 ## Workflow Integration
-1. **PRD Creation** (this rule) → 2. **PRD Review** (@03-prd-review.mdc) → 3. **Task Generation** (@08-generate-tasks.mdc) → 4. **Task Execution** (@09-process-tasks.mdc)
+1. **PRD Creation** (this rule) → 2. **PRD Review** (@03-prd-review.mdc) → 3. **Task Execution** (@04-prd-execute.mdc)
 
 ## 🎨 Additional Design States & Considerations
 - **Empty States**: What happens when there's no data?
-- **Loading States**: How do we show processing/network activity?  
+- **Loading States**: How do we show processing/network activity?
 - **Success States**: How do we celebrate completed actions?
 - **Error States**: How do we handle failures gracefully?
-- **Accessibility**: Does it work with VoiceOver and large text?
-- **Emotional Tone**: Does it align with WorkoutVoice's supportive, energetic brand?
-
+- **Accessibility**: Does it work with platform accessibility features?
+- **Brand Alignment**: Does it align with your product's tone and brand?
 
 ## Simplicity & Platform API Guidance
 
 > **Guidance for Implementation Plans:**
 >
-> - Favor the simplest solution that meets the requirements.
-> - Leverage Apple platform APIs (e.g., URLSession, Core Data, NWPathMonitor) for networking, persistence, and reachability.
-> - Avoid custom logic for networking, retry, concurrency, or state management unless there is a real, documented need or the user explicitly requests it.
-> - If advanced or defensive patterns (e.g., circuit breakers, exponential backoff, custom thread management) are proposed, include a clear justification for why platform APIs are insufficient.
-> - Overengineering and excessive defensive code should be avoided to ensure maintainability and clarity.
-
----
-description:
-globs:
-alwaysApply: false
----
-
-
-
+> - Favor the simplest solution that meets the requirements
+> - Leverage platform APIs (e.g., URLSession, Core Data, built-in networking) for standard functionality
+> - Avoid custom logic for networking, retry, concurrency, or state management unless documented need exists
+> - If advanced or defensive patterns are proposed, include clear justification for why platform APIs are insufficient
+> - Overengineering and excessive defensive code should be avoided to ensure maintainability and clarity

@@ -2,9 +2,7 @@
 
 ![PRD PowerBomb](README.png)
 
-A comprehensive Product Requirements Document (PRD) management system for coding with LLMs. As seen on "How I AI" with Claire Vo:
-
-https://youtu.be/_fD1PwltbuE?si=ZsbrZZmUA_UqziSm
+A comprehensive Product Requirements Document (PRD) management system for coding with LLMs. As seen on "How I AI" with Claire Vo: https://youtu.be/_fD1PwltbuE?si=ZsbrZZmUA_UqziSm
 
 ## Overview
 

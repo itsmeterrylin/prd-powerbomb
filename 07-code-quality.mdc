@@ -1,44 +1,205 @@
 ---
-globs: *.swift,*.py,*.json,*.html,*.js,*.css,*.ts
-alwaysApply: false
+description: Universal code quality rules and testing guidelines
+globs:
+alwaysApply: true
 ---
+# Universal Code Quality Rules
 
-✅ Universal Code Quality Rules (Swift & Python)
-	•	Max 2 levels of nesting (if / else / loop)
-	•	Functions should be small & single-purpose (<30 lines)
-	•	No magic values → use let/const or named constants
-	•	Use intention-revealing names for vars, funcs, classes
-	•	Avoid silent catch blocks — log or explicitly handle
-	•	Avoid duplicating state across local/props/context
-	•	Add // TODO(name, date) or # TODO(name, date) for hacks
-	•	No unnecessary fallbacks — document if needed
-	•	Expensive loops or filters must be memoized or paginated
+## ✅ Universal Code Quality Rules (All Languages)
+- Max 2 levels of nesting (if / else / loop)
+- Follow YAGNI principle
+- Functions should be small & single-purpose (<30 lines)
+- No magic values → use let/const or named constants
+- Use intention-revealing names for vars, funcs, classes
+- Avoid silent catch blocks — log or explicitly handle
+- Avoid duplicating state across local/props/context
+- Add `// TODO(name, date)` or `# TODO(name, date)` for hacks
+- No unnecessary fallbacks — document if needed
+- Expensive loops or filters must be memoized or paginated
 
-⸻
+## Language-Specific Guidelines
 
-🐍 Python-Specific
-	•	Explicit is better than implicit. Don’t hide behavior in dunder methods or decorators unless standard.
-	•	Use typing for all public functions/classes. Especially return values.
-	•	Don’t mutate arguments in-place. Always return new values unless explicitly designed to do so.
-	•	Use dataclasses or Pydantic for structured data, not loose dicts.
-	•	Group related functions into modules, not long files.
-	•	Use __all__ or single-point exports. Avoid accidental public exposure.
-	•	Don’t catch Exception broadly. Use specific error types.
-	•	Use pathlib and logging instead of os.path and print.
-	•	Stick to black and ruff/flake8 for style and linting.
+### 🐍 Python-Specific
+- Explicit is better than implicit. Don't hide behavior in dunder methods or decorators unless standard
+- Use typing for all public functions/classes. Especially return values
+- Don't mutate arguments in-place. Always return new values unless explicitly designed to do so
+- Use dataclasses or Pydantic for structured data, not loose dicts
+- Group related functions into modules, not long files
+- Use `__all__` or single-point exports. Avoid accidental public exposure
+- Don't catch Exception broadly. Use specific error types
+- Use pathlib and logging instead of os.path and print
+- Stick to black and ruff/flake8 for style and linting
 
-⸻
+### 🍎 Swift-Specific
+- Avoid force unwrapping (!) — always use guard let, if let, or default values
+- Use struct by default, only use class if you need reference semantics
+- Functions should return immutable values unless you're explicitly mutating state
+- Favor value types (struct/enums) + protocol conformance
+- Avoid deep optional chaining — prefer early returns with guard
+- Use private(set) or internal access control to encapsulate state
+- Group related code using extensions — keeps logic modular and discoverable
+- Use @MainActor or concurrency annotations clearly
+- Use SwiftLint for consistent style, mark temporary disables with `// swiftlint:disable [rule] // TODO(name, date)`
 
-🍎 Swift-Specific
-	•	Avoid force unwrapping (!) — always use guard let, if let, or default values
-	•	Use struct by default, only use class if you need reference semantics
-	•	Functions should return immutable values unless you’re explicitly mutating state
-	•	Favor value types (struct/enums) + protocol conformance
-	•	Avoid deep optional chaining — prefer early returns with guard
-	•	Use private(set) or internal access control to encapsulate state
-	•	Group related code using extensions — keeps logic modular and discoverable
-	•	Use @MainActor or concurrency annotations clearly
-	•	Use SwiftLint for consistent style, and mark temporary disables with // swiftlint:disable [rule] // TODO(name, date)
+### 🌐 JavaScript/TypeScript-Specific
+- Use TypeScript strict mode
+- Prefer const over let, avoid var entirely
+- Use async/await over Promise chains
+- Destructure objects and arrays for clarity
+- Use optional chaining (?.) and nullish coalescing (??)
+- Prefer pure functions and immutable data structures
+- Use meaningful variable names, avoid abbreviations
+- Use ESLint and Prettier for consistent formatting
+- Handle errors explicitly, don't ignore Promise rejections
 
-    Use curl to test backend changes, JWT is included in /Users/terrylin/WorkoutVoice/backend/.env under JWT_TEST
-    Use test audio files in this folder to test transcription/tagging endpoints: /Users/terrylin/WorkoutVoice/backend/tests/audio-files
+### ☕ Java-Specific
+- Follow standard naming conventions (PascalCase for classes, camelCase for methods)
+- Use final keyword for variables that shouldn't change
+- Prefer composition over inheritance
+- Use Optional for nullable return types
+- Handle exceptions appropriately, don't catch and ignore
+- Use StringBuilder for string concatenation in loops
+- Follow single responsibility principle for classes
+- Use dependency injection instead of static dependencies
+
+## 🧪 Universal Testing Guidelines
+- Always run tests before and after any code changes
+- Write tests for new features before implementation (TDD)
+- Update tests when changing existing behavior
+- Never commit broken tests — fix or skip with TODO
+- Use descriptive test names that explain the scenario
+- Test both success and failure cases
+- Mock external dependencies (APIs, databases, file system)
+- Use test data factories for consistent test data
+- Keep tests fast (<2 minutes total runtime)
+- Group related tests using test classes or describe blocks
+
+## 🔐 Authentication Testing
+- Always test with real authentication tokens for API endpoints
+- Use environment variables for test credentials
+- Test both authenticated and unauthenticated scenarios
+- Validate token expiration and refresh flows
+- Test permission-based access control
+- Mock authentication in unit tests, use real auth in integration tests
+
+## 📊 Test Coverage Targets
+- **Service Layer**: 70-85%
+- **API Layer**: 60-75%
+- **Models/Utils**: 85-95%
+- **Infrastructure**: 50-70%
+- **Frontend Components**: 60-80%
+- **Critical Business Logic**: 90%+
+
+## 🚀 Framework-Specific Quick Commands (CUSTOMIZE FOR YOUR STACK)
+
+### Backend Testing
+```bash
+# Full test suite (customize for your framework)
+{{BACKEND_TEST_COMMAND}} # e.g., pytest app/tests/ -v --tb=short
+{{BACKEND_COVERAGE_COMMAND}} # e.g., pytest --cov=app --cov-report=term-missing
+
+# Service layer tests
+{{SERVICE_TEST_COMMAND}} # e.g., pytest app/tests/services/ -v
+
+# API tests with authentication
+export {{AUTH_TOKEN_VAR}}=$({{GET_TOKEN_COMMAND}})
+{{API_TEST_COMMAND}} # e.g., curl -H "Authorization: Bearer $TOKEN" $API_BASE/endpoint
+
+# Single test file
+{{SINGLE_TEST_COMMAND}} # e.g., pytest app/tests/test_specific.py -v
+
+# Debug failing tests
+{{DEBUG_TEST_COMMAND}} # e.g., pytest -v --tb=long --showlocals
+```
+
+### Frontend Testing
+```bash
+# Frontend tests (customize for your platform)
+{{FRONTEND_TEST_COMMAND}} # e.g., npm test, xcodebuild test
+{{FRONTEND_BUILD_COMMAND}} # e.g., npm run build, xcodebuild build
+
+# Unit tests only
+{{UNIT_TEST_COMMAND}} # e.g., npm run test:unit
+
+# Integration tests
+{{INTEGRATION_TEST_COMMAND}} # e.g., npm run test:e2e
+
+# Test with specific configuration
+{{CONFIGURED_TEST_COMMAND}} # e.g., npm test -- --coverage
+```
+
+## 🔧 Authentication Token Management (CUSTOMIZE FOR YOUR AUTH SYSTEM)
+
+### Get Test Authentication Token
+```bash
+# From environment file
+export {{TOKEN_VAR}}=$(grep '{{TOKEN_KEY}}=' {{CONFIG_FILE}} | cut -d'"' -f2)
+
+# Or generate new token via API
+curl -X POST {{AUTH_ENDPOINT}} \
+  -H "Content-Type: application/json" \
+  -d '{"{{USERNAME_FIELD}}": "{{TEST_USER}}", "{{PASSWORD_FIELD}}": "{{TEST_PASS}}"}'
+```
+
+### Use Authentication Token in Tests
+```bash
+# API testing with real auth
+curl -H "Authorization: Bearer ${{TOKEN_VAR}}" \
+  {{API_BASE}}/{{ENDPOINT}}
+
+# Language-specific test with real auth (Python example)
+import os
+import requests
+
+token = os.getenv('{{TOKEN_VAR}}')
+headers = {'Authorization': f'Bearer {token}'}
+response = requests.get('{{API_BASE}}/{{ENDPOINT}}', headers=headers)
+```
+
+## 📋 Pre-Commit Checklist
+- [ ] All tests pass locally
+- [ ] Code coverage meets targets
+- [ ] No flaky tests
+- [ ] Authentication tested (where applicable)
+- [ ] Both success and error cases covered
+- [ ] Performance tests for critical paths
+- [ ] Integration tests with real dependencies
+- [ ] Linting passes without warnings
+- [ ] No hardcoded secrets or credentials
+- [ ] Documentation updated for public APIs
+
+## Customization Template
+
+Replace these placeholders with your actual commands:
+
+```bash
+# Backend Commands
+BACKEND_TEST_COMMAND="your_test_framework tests/ -v"
+BACKEND_COVERAGE_COMMAND="your_test_framework --coverage"
+SERVICE_TEST_COMMAND="your_test_framework tests/services/ -v"
+API_TEST_COMMAND="curl -H 'Authorization: Bearer $TOKEN' $API_URL"
+
+# Frontend Commands
+FRONTEND_TEST_COMMAND="your_frontend_test_runner"
+FRONTEND_BUILD_COMMAND="your_build_tool build"
+UNIT_TEST_COMMAND="your_test_runner --unit"
+INTEGRATION_TEST_COMMAND="your_test_runner --integration"
+
+# Authentication
+TOKEN_VAR="YOUR_TOKEN_ENVIRONMENT_VARIABLE"
+AUTH_ENDPOINT="https://your-auth-service.com/login"
+CONFIG_FILE="path/to/your/.env"
+TOKEN_KEY="JWT_TEST"
+TEST_USER="test@example.com"
+TEST_PASS="testpassword"
+```
+
+## Code Review Checklist
+- [ ] **Readability**: Code is self-documenting with clear variable names
+- [ ] **Simplicity**: Solution is as simple as possible but no simpler
+- [ ] **Testability**: Code can be easily unit tested
+- [ ] **Error Handling**: Appropriate error handling for expected failure modes
+- [ ] **Performance**: No obvious performance issues (O(n²) loops, etc.)
+- [ ] **Security**: No hardcoded credentials, input validation present
+- [ ] **Maintainability**: Code follows established patterns and conventions
+- [ ] **Documentation**: Public APIs are documented, complex logic explained

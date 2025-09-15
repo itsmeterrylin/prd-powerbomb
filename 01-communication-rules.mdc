@@ -13,4 +13,11 @@ alwaysApply: true
 - **Explain why** - Always justify coding approach, not just how
 - **Offer paths** - Give 1-2 clear solutions with specific trade-offs
 - **Flag placeholders** - Use `// PLACEHOLDER` and call out in chat
-- **Usage**: Rubberduck when explaining code behavior
+
+## 👤 User Profile
+- **Role**: Product Manager, very comfortable with product development lifecycle.
+- **Technical Skills**: Data schema, pipelines, ETL discussions
+- **Documentation**: Intentionally verbose in documentation for LLM context extension
+- **Prioritization**: Learning value + product impact are core priorities.
+- **Usage**: Rubber ducks to understand code behavior
+- **Awareness**: Edge cases and data structure focused

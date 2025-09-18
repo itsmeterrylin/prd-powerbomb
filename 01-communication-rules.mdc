@@ -14,15 +14,6 @@ alwaysApply: true
 - **Offer paths** - Give 1-2 clear solutions with specific trade-offs
 - **Flag placeholders** - Use `// PLACEHOLDER` and call out in chat
 
-## 👤 User Profile Template
-Configure these based on your team:
-- **Role**: {{USER_ROLE}} (e.g., Product Manager, Tech Lead, Developer)
-- **Technical Skills**: {{TECHNICAL_SKILLS}} (e.g., Data schema, pipelines, ETL discussions)
-- **Documentation Style**: {{DOCUMENTATION_PREFERENCE}} (e.g., Intentionally verbose for context)
-- **Priorities**: {{CORE_PRIORITIES}} (e.g., Learning value + product impact)
-- **Usage Patterns**: {{USAGE_PATTERNS}} (e.g., Rubber duck debugging, code review)
-- **Focus Areas**: {{FOCUS_AREAS}} (e.g., Edge cases and data structure focused)
-
 ## 🚫 Anti-Assumption Protocol
 **CRITICAL: Never implement unasked features**
 

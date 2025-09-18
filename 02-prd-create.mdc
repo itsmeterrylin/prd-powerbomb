@@ -7,13 +7,12 @@ alwaysApply: false
 
 ## 🎯 Goal: Create comprehensive implementation plans for features
 
-## 📚 Reference Architecture (CUSTOMIZE FOR YOUR PROJECT)
-- **Frontend**: {{FRONTEND_DOCS_PATH}} - Your frontend architecture and patterns
-- **Backend**: {{BACKEND_DOCS_PATH}} - Your backend services and API endpoints
-- **API Contracts**: {{API_DOCS_PATH}} - Complete API specifications
-- **Documentation Standards**: {{DOCUMENTATION_STANDARDS_PATH}} - Evidence-based documentation
-- **Production Database**: {{DATABASE_PROVIDER}} (`{{DATABASE_PROJECT_ID}}`)
-- **Production API**: `{{PRODUCTION_API_URL}}`
+## 📚 Reference Architecture
+- **Frontend**: /frontend/docs - Your frontend architecture and patterns
+- **Backend**: /backend/docs - Your backend services and API endpoints
+- **API Contracts**: backend/docs/complete-api-specs.md - Complete API specifications
+- **Documentation Standards**: /docs/document-standards.md - Evidence-based documentation and documentation standards
+- **Technical Preferences**: /docs/technical-preferences.md - Tech or Platform preferences for the project
 
 ## Required Components
 - **Summary** - Clear goal statement

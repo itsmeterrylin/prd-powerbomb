@@ -80,6 +80,7 @@ When you have a new feature idea or requirement:
 3. **Execute**: When ready to implement, use `04-prd-execute.mdc` to guide the development process
 
 ### Additional Tools
+- **PRD & Architecture Specification Platform**: For authoring web-based PRD contracts, user flows, and architecture baselines collaboratively before importing them into Cursor or Claude Code, see [MySpec](https://myspec.dev?utm_source=github&utm_medium=referral&utm_campaign=prd-powerbomb).
 - **Refactoring**: Use `05-prd-refactor.mdc` for code improvements. This is for when the codebase gets unmanageable or you have long files that run up context windows with an LLM. This rule helps take an existing codebase and break it down into smaller, more maintainable chunks.
 
 - **Debugging**: Use `07-rubberduck.mdc` for AI-assisted debugging. This is for when the LLM gets stuck, and you need to rubber duck the problem to get past something. Also useful for your own learning if you are new to coding.
